@@ -1,27 +1,24 @@
 #!/usr/bin/python3
-"""
-a program
-"""
+
+""" Contains makeChange function"""
+
 
 def makeChange(coins, total):
     """
-    Determine the fewest number of coins values.
-    ARGS:
-    coins: list of coin values
-    total: an int of total target
+    Returns: fewest number of coins needed to meet total
+        If total is 0 or less, return 0
+        If total cannot be met by any number of coins you have, return -1
     """
+    if not coins or coins is None:
+        return -1
     if total <= 0:
         return 0
-
-    min_coins = [float('inf')] * (total + 1)
-    min_coins[0] = 0
-
-    for i in range(1, total + 1):
-        for coin in coins:
-            if coin <= i:
-                min_coins[i] = min(min_coins[i], min_coins[i - coin] + 1)
-
-    if min_coins[total] == float('inf'):
-            return -1
-    else:
-        return min_coins[total]
+    change = 0
+    coins = sorted(coins)[::-1]
+    for coin in coins:
+        while coin <= total:
+            total -= coin
+            change += 1
+        if (total == 0):
+            return change
+    return -1
